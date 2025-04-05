@@ -13,9 +13,22 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
-      "semi": ["error", "never"],
-      "quotes": ["error", "double"],
-      "eol-last": ["error", "always"]
+      semi: ["error", "never"],
+      quotes: ["error", "double"],
+      "eol-last": ["error", "always"],
+      "object-curly-newline": [
+        "error",
+        {
+          multiline: true,
+          consistent: true,
+        },
+      ],
+      "object-property-newline": [
+        "error",
+        {
+          allowAllPropertiesOnSameLine: false,
+        },
+      ],
     },
   },
 ]
