@@ -13,22 +13,21 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
-      semi: ["error", "never"],
-      quotes: ["error", "double"],
-      "eol-last": ["error", "always"],
-      "object-curly-newline": [
-        "error",
-        {
-          multiline: true,
-          consistent: true,
-        },
-      ],
-      "object-property-newline": [
-        "error",
-        {
-          allowAllPropertiesOnSameLine: false,
-        },
-      ],
+      // Let Prettier handle formatting
+      "prettier/prettier": "error",
+      
+      // Custom rules that don't conflict with Prettier
+      "no-unused-vars": "warn",
+      "no-console": ["warn", { "allow": ["warn", "error"] }],
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      
+      // Remove conflicting formatting rules
+      // "object-curly-newline": "off",
+      // "object-property-newline": "off",
+      // "newline-per-chained-call": "off",
+      // "operator-linebreak": "off",
+      // "object-curly-spacing": "off",
     },
   },
 ]

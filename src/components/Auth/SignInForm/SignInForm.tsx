@@ -33,7 +33,7 @@ export const SignInForm = () => {
           type="email"
           label="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           required
           className={authStyles.form.input}
         />
@@ -43,7 +43,7 @@ export const SignInForm = () => {
           type="password"
           label="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           required
           className={authStyles.form.input}
         />

@@ -1,26 +1,25 @@
 "use client"
 
 import { useEffect } from "react"
-import { auth, db } from "@/lib/firebase"
-import { AuthProvider } from "@/contexts/AuthContext"
+import { auth, db } from "@/lib/firebase/config"
 import { AuthForms } from "@/components/Auth/AuthForms"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/AuthContext"
+
 export default function Home() {
+  const router = useRouter()
+  const { user } = useAuth()
+
   useEffect(() => {
     // Test Firebase initialization
     console.log("Firebase Auth initialized:", auth)
     console.log("Firebase Firestore initialized:", db)
-  }, [])
 
-  return (
-    <AuthProvider>
-      {/* <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-          <h1>Event Buddy</h1>
-        <p>Check the console for Firebase initialization status</p>
-        <TestButton />
-      </main>
-    </div> */}
-      <AuthForms />
-    </AuthProvider>
-  )
+    if (user) {
+      console.log('User is logged in, redirecting to dashboard')
+      router.push('/dashboard')
+    }
+  }, [user, router])
+
+  return <AuthForms />
 }

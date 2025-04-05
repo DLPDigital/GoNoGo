@@ -9,6 +9,7 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore"
 
 export interface Event {
@@ -42,7 +43,7 @@ export const getUserEvents = async (userId: string) => {
       orderBy("date", "asc")
     )
     const querySnapshot = await getDocs(eventsQuery)
-    return querySnapshot.docs.map((doc) => ({
+    return querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     })) as Event[]
@@ -73,4 +74,32 @@ export const deleteEvent = async (eventId: string) => {
     console.error("Error deleting event:", error)
     throw error
   }
+}
+
+export const getEventById = async (eventId: string) => {
+  try {
+    const eventRef = doc(db, "events", eventId)
+    const eventDoc = await getDoc(eventRef)
+
+    if (!eventDoc.exists()) {
+      return null
+    }
+
+    return {
+      id: eventDoc.id,
+      ...eventDoc.data(),
+    } as Event
+  } catch (error) {
+    console.error("Error fetching event:", error)
+    throw error
+  }
+}
+
+export const addEventToUser = async (event: Event, userId: string): Promise<void> => {
+  const newEvent = {
+    ...event,
+    userId,
+    createdAt: new Date(),
+  }
+  await addDoc(collection(db, "events"), newEvent)
 }

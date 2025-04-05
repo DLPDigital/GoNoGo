@@ -49,7 +49,7 @@ export const EditEventForm = ({
           type="text"
           label="Event Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value)}
           required
           className="w-full"
         />
@@ -59,7 +59,7 @@ export const EditEventForm = ({
           type="datetime-local"
           label="Event Date"
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={e => setDate(e.target.value)}
           required
           className="w-full"
         />
@@ -69,7 +69,7 @@ export const EditEventForm = ({
           type="text"
           label="Location"
           value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={e => setLocation(e.target.value)}
           required
           className="w-full"
         />
@@ -79,7 +79,7 @@ export const EditEventForm = ({
           type="text"
           label="Description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={e => setDescription(e.target.value)}
           className="w-full"
         />
       </div>

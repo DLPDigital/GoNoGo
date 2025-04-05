@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app"
-import { getAuth } from "firebase/auth"
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
@@ -11,6 +15,13 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig)
-export const auth = getAuth(app)
-export const db = getFirestore(app)
+const auth = getAuth(app)
+const db = getFirestore(app)
+
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+  console.error("Error setting auth persistence:", error)
+})
+
+export { app, auth, db }

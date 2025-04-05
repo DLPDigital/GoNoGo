@@ -45,11 +45,9 @@ export const useEvents = () => {
   }, [fetchEvents])
 
   const upcomingEvents = events.filter(
-    (event) => new Date(event.date) > new Date()
+    event => new Date(event.date) > new Date()
   )
-  const pastEvents = events.filter(
-    (event) => new Date(event.date) <= new Date()
-  )
+  const pastEvents = events.filter(event => new Date(event.date) <= new Date())
 
   return {
     events,

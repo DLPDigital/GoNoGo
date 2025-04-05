@@ -50,7 +50,7 @@ export const SignUpForm = () => {
           type="email"
           label="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           required
           className={authStyles.form.input}
           disabled={loading}
@@ -61,7 +61,7 @@ export const SignUpForm = () => {
           type="password"
           label="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           required
           className={authStyles.form.input}
           disabled={loading}
@@ -72,7 +72,7 @@ export const SignUpForm = () => {
           type="password"
           label="Confirm Password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={e => setConfirmPassword(e.target.value)}
           required
           className={authStyles.form.input}
           disabled={loading}

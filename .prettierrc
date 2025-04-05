@@ -1,5 +1,14 @@
 {
-  "semi": false,
   "singleQuote": false,
-  "trailingComma": "es5"
+  "semi": false,
+  "trailingComma": "es5",
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "proseWrap": "preserve",
+  "endOfLine": "lf",
+  "jsxSingleQuote": false,
+  "bracketSameLine": false
 }
