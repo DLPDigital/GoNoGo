@@ -13,13 +13,8 @@ import { PastEvents } from "@/components/Events/PastEvents"
 const DashboardPage: React.FC = () => {
   const [showCreateEvent, setShowCreateEvent] = useState(false)
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
-  const {
-    loading,
-    upcomingEvents,
-    pastEvents,
-    fetchEvents,
-    deleteEvent,
-  } = useEvents()
+  const { loading, upcomingEvents, pastEvents, fetchEvents, deleteEvent } =
+    useEvents()
 
   const handleEventUpdated = () => {
     fetchEvents()
@@ -29,7 +24,7 @@ const DashboardPage: React.FC = () => {
     <Authenticated>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <h1 className="font-rock3d text-5xl font-bold">Dashboard rock</h1>
           <Button variant="solid" onPress={() => setShowCreateEvent(true)}>
             Create New Event
           </Button>
