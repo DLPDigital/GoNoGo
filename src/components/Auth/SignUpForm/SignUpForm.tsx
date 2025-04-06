@@ -12,6 +12,7 @@ export const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [username, setUsername] = useState("")
   const { signUp } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,7 +25,7 @@ export const SignUpForm = () => {
     }
 
     try {
-      await signUp(email, password)
+      await signUp(email, password, username)
     } catch (err) {
       if (err instanceof FirebaseError) {
         if (err instanceof FirebaseError) {
@@ -51,6 +52,17 @@ export const SignUpForm = () => {
           label="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
+          required
+          className={authStyles.form.input}
+          disabled={loading}
+        />
+      </div>
+      <div className={authStyles.form.inputContainer}>
+        <Input
+          type="username"
+          label="Username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
           required
           className={authStyles.form.input}
           disabled={loading}

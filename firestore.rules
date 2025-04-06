@@ -1,15 +1,40 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Events collection rules
     match /events/{eventId} {
-      // Allow public read access to events
-      allow read: if true;
+      // Allow reads for any authenticated user
+      allow read: if request.auth != null;
       
-      // Only allow authenticated users to create, update, and delete their own events
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-      allow update: if request.auth != null && resource.data.userId == request.auth.uid;
-      allow delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      // Allow creation by authenticated users
+      allow create: if request.auth != null && 
+                    request.resource.data.userId == request.auth.uid;
+      
+      // Allow the event owner to update any field
+      allow update: if request.auth != null && 
+                    resource.data.userId == request.auth.uid;
+      
+      // Allow a user to add themselves as an attendee
+      allow update: if request.auth != null &&
+                    // User is not the creator but wants to join
+                    resource.data.userId != request.auth.uid &&
+                    // User is adding themselves to attendeeIds
+                    request.resource.data.attendeeIds.hasAll([request.auth.uid]) &&
+                    !resource.data.attendeeIds.hasAll([request.auth.uid]) &&
+                    // Make sure other fields aren't changed
+                    request.resource.data.userId == resource.data.userId &&
+                    request.resource.data.title == resource.data.title &&
+                    request.resource.data.date == resource.data.date &&
+                    request.resource.data.description == resource.data.description &&
+                    request.resource.data.location == resource.data.location;
+                    
+      // Only allow deletion by the creator
+      allow delete: if request.auth != null && 
+                    resource.data.userId == request.auth.uid;
+    }
+    
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }

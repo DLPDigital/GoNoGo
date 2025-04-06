@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { Event } from "@/lib/firebase/events"
-import { getEventById, addEventToUser } from "@/lib/firebase/events"
+import { getEventById, addUserToEvent } from "@/lib/firebase/events"
 import { Button } from "@heroui/react"
 
 export default function EventPage() {
@@ -46,7 +46,7 @@ export default function EventPage() {
   const handleJoinEvent = async () => {
     try {
       // Add the event to the user's upcoming events
-      await addEventToUser(event!, user!.uid)
+      await addUserToEvent(event!.id!, user!.uid)
       // Redirect to the dashboard
       router.push("/dashboard")
     } catch (error) {
