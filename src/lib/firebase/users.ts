@@ -2,7 +2,7 @@ import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
 import { db } from "./config"
 
 export interface UserProfile {
-  id: string
+  uid: string
   username: string
   email: string
   createdAt: Date
@@ -12,7 +12,7 @@ export const createUserProfile = async (userId: string, email: string, username:
   try {
     const userRef = doc(db, "users", userId)
     await setDoc(userRef, {
-      id: userId,
+      uid: userId,
       email,
       username,
       createdAt: new Date(),

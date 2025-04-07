@@ -33,6 +33,7 @@ export const CreateEventForm = ({
         date,
         description,
         location,
+        attendeeIds: [user.uid],
         userId: user.uid,
       })
       onClose()
@@ -55,7 +56,7 @@ export const CreateEventForm = ({
       <div>
         <Input
           type="text"
-          label="Event Title"
+          label={title ? title : "Enter title"}
           value={title}
           onChange={e => setTitle(e.target.value)}
           required
@@ -65,7 +66,7 @@ export const CreateEventForm = ({
       <div>
         <Input
           type="datetime-local"
-          label="Event Date"
+          label=""
           value={date}
           onChange={e => setDate(e.target.value)}
           required
@@ -75,7 +76,7 @@ export const CreateEventForm = ({
       <div>
         <Input
           type="text"
-          label="Location"
+          label={location ? location : "Enter location"}
           value={location}
           onChange={e => setLocation(e.target.value)}
           required
@@ -85,7 +86,7 @@ export const CreateEventForm = ({
       <div>
         <Input
           type="text"
-          label="Description"
+          label={description ? description : "Enter description"}
           value={description}
           onChange={e => setDescription(e.target.value)}
           className="w-full"
@@ -93,7 +94,7 @@ export const CreateEventForm = ({
       </div>
       <Button
         type="submit"
-        variant="solid"
+        color="primary"
         className="w-full"
         disabled={loading}
       >

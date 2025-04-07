@@ -22,10 +22,9 @@ const DashboardPage: React.FC = () => {
 
   return (
     <Authenticated>
-      <div className="space-y-6">
+      <div className="space-y-6 py-24">
         <div className="flex justify-between items-center">
-          <h1 className="font-rock3d text-5xl font-bold">Dashboard rock</h1>
-          <Button variant="solid" onPress={() => setShowCreateEvent(true)}>
+          <Button color="primary" onPress={() => setShowCreateEvent(true)}>
             Create New Event
           </Button>
         </div>
@@ -43,7 +42,6 @@ const DashboardPage: React.FC = () => {
           onSuccess={handleEventUpdated}
         />
 
-        {!showCreateEvent && !editingEvent && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <UpcomingEvents
               events={upcomingEvents}
@@ -57,7 +55,6 @@ const DashboardPage: React.FC = () => {
               onDelete={deleteEvent}
             />
           </div>
-        )}
       </div>
     </Authenticated>
   )

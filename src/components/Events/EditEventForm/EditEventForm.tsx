@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Button, Input } from "@heroui/react"
+import { Button, Form as HeroForm, Input, Textarea } from "@heroui/react"
 import { Event, updateEvent } from "@/lib/firebase/events"
 
 interface EditEventFormProps {
@@ -19,13 +19,11 @@ export const EditEventForm = ({
   const [date, setDate] = useState(event.date)
   const [description, setDescription] = useState(event.description || "")
   const [location, setLocation] = useState(event.location)
-  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!event.id) return
 
-    setLoading(true)
     try {
       await updateEvent(event.id, {
         title,
@@ -37,70 +35,77 @@ export const EditEventForm = ({
       onClose()
     } catch (error) {
       console.error("Failed to update event:", error)
-    } finally {
-      setLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Input
-          type="text"
-          label="Event Title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          required
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Input
-          type="datetime-local"
-          label="Event Date"
-          value={date}
-          onChange={e => setDate(e.target.value)}
-          required
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Input
-          type="text"
-          label="Location"
-          value={location}
-          onChange={e => setLocation(e.target.value)}
-          required
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Input
-          type="text"
-          label="Description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          className="w-full"
-        />
-      </div>
-      <div className="flex space-x-2">
-        <Button
-          type="submit"
-          variant="solid"
-          className="flex-1"
-          disabled={loading}
-        >
-          {loading ? "Saving..." : "Save Changes"}
+    <HeroForm className="w-full" onSubmit={handleSubmit}>
+      <Input
+        id="this"
+        isRequired
+        value={title}
+        label="Event Title"
+        labelPlacement="outside-left"
+        name="title"
+        placeholder={title ? title : "Event title"}
+        onChange={e => setTitle(e.target.value)}
+        type="text"
+        className="mb-2 mt-4 flex-col items-start w-full"
+        classNames={{
+          label: "mb-2",
+          input: "py-1",
+          mainWrapper: "w-full",
+        }}
+      />
+      <Input
+        isRequired
+        type="datetime-local"
+        label="Date"
+        labelPlacement="outside-left"
+        name="date"
+        value={date}
+        onChange={e => setDate(e.target.value)}
+        className="mb-2 flex-col items-start"
+        classNames={{
+          label: "mb-2",
+          input: "py-1",
+          mainWrapper: "w-full",
+        }}
+      />
+
+      <Input
+        isRequired
+        type="text"
+        label="Location"
+        labelPlacement="outside-left"
+        name="location"
+        value={location}
+        onChange={e => setLocation(e.target.value)}
+        className="mb-2 flex-col items-start"
+        classNames={{
+          label: "mb-2",
+          input: "py-1",
+          mainWrapper: "w-full",
+        }}
+      />
+
+      <Textarea
+        label={"Enter description"}
+        value={description}
+        onChange={e => setDescription(e.target.value)}
+        required
+        className="w-full"
+        minRows={3} // This sets the minimum number of rows
+        maxRows={6} // This sets the maximum number of rows before scrolling
+      />
+      <div className="flex justify-end gap-2 pt-8">
+        <Button type="submit" variant="bordered">
+          Submit
         </Button>
-        <Button
-          type="button"
-          variant="light"
-          onPress={onClose}
-          className="flex-1"
-        >
+        <Button color="primary" onPress={onClose}>
           Cancel
         </Button>
       </div>
-    </form>
+    </HeroForm>
   )
 }

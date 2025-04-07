@@ -1,7 +1,7 @@
 "use client"
 
 import { Event } from "@/lib/firebase/events"
-import { EventCard } from "../EventCard/EventCard"
+import { EventCardLite } from "../EventCardLite/EventCardLite"
 
 interface PastEventsProps {
   events: Event[]
@@ -20,7 +20,7 @@ export const PastEvents = ({
       ) : events.length > 0 ? (
         <div className="space-y-4">
           {events.map(event => (
-            <EventCard
+            <EventCardLite
               key={event.id}
               event={event}
               onDelete={onDelete}

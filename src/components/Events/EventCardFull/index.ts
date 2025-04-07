@@ -1,0 +1,1 @@
+export { EventCardFull } from "./EventCardFull"
