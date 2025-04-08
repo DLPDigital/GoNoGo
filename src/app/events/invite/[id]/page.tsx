@@ -83,7 +83,7 @@ export default function EventInvitePage() {
           <h4 className="text-lg font-medium text-gray-900 mb-4">
             Log in or sign up to add this event to your calendar
           </h4>
-          <AuthForms />
+          <AuthForms invited />
         </div>
       </div>
     </div>

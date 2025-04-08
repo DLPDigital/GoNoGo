@@ -4,36 +4,37 @@ import { useState } from "react"
 import { SignInForm } from "@/components/Auth/SignInForm"
 import { SignUpForm } from "@/components/Auth/SignUpForm"
 import { Button } from "@heroui/react"
-import { authStyles } from "@/styles/auth"
+import { IntroText } from "@/components/IntroText"
 
-export const AuthForms = () => {
+type Props = {
+  invited?: boolean
+}
+
+export const AuthForms = ({ invited }: Props) => {
   const [isSignIn, setIsSignIn] = useState(true)
 
   return (
-    <div className={authStyles.card.container}>
-      <div className={authStyles.card.wrapper}>
-        <h2 className={authStyles.card.header}>
-          {isSignIn ? "Sign In" : "Create Account"}
-        </h2>
-        <div className={authStyles.card.toggleContainer}>
-          <div className={authStyles.card.toggleButtons}>
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
+      <IntroText />
+      <div className="maxw-[400px] w-full p-8 bg-white rounded-lg shadow-lg space-y-6 mx-auto">
+        <h2>{isSignIn ? "Sign In" : "Create Account"}</h2>
+        <div>
+          <div className="flex justify-center items-center space-x-4 mb-4">
             <Button
-              variant={isSignIn ? "solid" : "light"}
+              color={isSignIn ? "primary" : "secondary"}
               onPress={() => setIsSignIn(true)}
-              className={authStyles.card.toggleButton}
             >
               Sign In
             </Button>
             <Button
-              variant={!isSignIn ? "solid" : "light"}
+              color={isSignIn ? "primary" : "secondary"}
               onPress={() => setIsSignIn(false)}
-              className={authStyles.card.toggleButton}
             >
               Sign Up
             </Button>
           </div>
         </div>
-        {isSignIn ? <SignInForm /> : <SignUpForm />}
+        {isSignIn ? <SignInForm invited={invited} /> : <SignUpForm />}
       </div>
     </div>
   )

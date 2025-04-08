@@ -9,6 +9,7 @@ import { CreateEventModal } from "@/components/Events/CreateEventModal"
 import { EditEventModal } from "@/components/Events/EditEventModal"
 import { UpcomingEvents } from "@/components/Events/UpcomingEvents"
 import { PastEvents } from "@/components/Events/PastEvents"
+import { IntroText } from "@/components/IntroText"
 
 const DashboardPage: React.FC = () => {
   const [showCreateEvent, setShowCreateEvent] = useState(false)
@@ -23,12 +24,7 @@ const DashboardPage: React.FC = () => {
   return (
     <Authenticated>
       <div className="pt-8 pb-4">
-        <h1>Hi</h1>
-        <p>
-          Hello! Want to go to an event, but not <em>really</em>? Use Event
-          Buddy to make plans with your friends, you can cancel and they won't
-          know. If you both cancel however, then the event is removed.
-        </p>
+        <IntroText />
         <div className="flex justify-between items-center mt-8">
           <Button color="primary" onPress={() => setShowCreateEvent(true)}>
             Create New Event

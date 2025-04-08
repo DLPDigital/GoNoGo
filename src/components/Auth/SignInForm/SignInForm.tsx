@@ -2,11 +2,14 @@
 
 import { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { Button, Input } from "@heroui/react"
-import { authStyles } from "@/styles/auth"
+import { Button, Form as HeroForm, Input } from "@heroui/react"
 import { useRouter } from "next/navigation"
 
-export const SignInForm = () => {
+type SignInFormProps = {
+  invited?: boolean;
+}
+
+export const SignInForm = ({ invited }: SignInFormProps) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -19,7 +22,9 @@ export const SignInForm = () => {
 
     try {
       await signIn(email, password)
-      router.push("/dashboard")
+      if (!invited) {
+        router.push("/dashboard")
+      }
     } catch (err) {
       setError("Failed to sign in")
       console.error(err)
@@ -27,35 +32,42 @@ export const SignInForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={authStyles.form.container}>
-      <div className={authStyles.form.inputContainer}>
+    <div className="max-w-[400px] w-full p-8 bg-white rounded-lg shadow-lg space-y-6 mx-auto">
+      <HeroForm className="w-full" onSubmit={handleSubmit}>
         <Input
           type="email"
           label="Email"
-          value={email}
+          labelPlacement="outside-left"
           onChange={e => setEmail(e.target.value)}
-          required
-          className={authStyles.form.input}
+          isRequired
+          className="mb-2 mt-4 flex-col items-start w-full"
+          classNames={{
+            label: "mb-2",
+            input: "py-1",
+            mainWrapper: "w-full",
+          }}
         />
-      </div>
-      <div className={authStyles.form.inputContainer}>
         <Input
           type="password"
           label="Password"
-          value={password}
+          labelPlacement="outside-left"
           onChange={e => setPassword(e.target.value)}
-          required
-          className={authStyles.form.input}
+          isRequired
+          className="mb-2 mt-4 flex-col items-start w-full"
+          classNames={{
+            label: "mb-2",
+            input: "py-1",
+            mainWrapper: "w-full",
+          }}
         />
-      </div>
-      {error && <p className={authStyles.form.error}>{error}</p>}
-      <Button
-        type="submit"
-        variant="solid"
-        className={authStyles.form.submitButton}
-      >
-        Sign In
-      </Button>
-    </form>
+         {error && <p>{error}</p>}
+        <Button
+          type="submit"
+          color="primary"
+        >
+          Sign In
+        </Button>
+      </HeroForm>
+    </div>
   )
 }

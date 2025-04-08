@@ -2,8 +2,7 @@
 
 import { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { Button, Input } from "@heroui/react"
-import { authStyles } from "@/styles/auth"
+import { Button, Form as HeroForm, Input } from "@heroui/react"
 import { FirebaseError } from "firebase/app"
 
 export const SignUpForm = () => {
@@ -45,60 +44,68 @@ export const SignUpForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={authStyles.form.container}>
-      <div className={authStyles.form.inputContainer}>
-        <Input
+    <div className="max-w-[400px] w-full p-8 bg-white rounded-lg shadow-lg space-y-6 mx-auto">
+      <HeroForm className="w-full" onSubmit={handleSubmit}>
+      <Input
           type="email"
           label="Email"
-          value={email}
+          labelPlacement="outside-left"
           onChange={e => setEmail(e.target.value)}
-          required
-          className={authStyles.form.input}
-          disabled={loading}
+          isRequired
+          className="mb-2 mt-4 flex-col items-start w-full"
+          classNames={{
+            label: "mb-2",
+            input: "py-1",
+            mainWrapper: "w-full",
+          }}
         />
-      </div>
-      <div className={authStyles.form.inputContainer}>
         <Input
           type="username"
           label="Username"
-          value={username}
+          labelPlacement="outside-left"
           onChange={e => setUsername(e.target.value)}
-          required
-          className={authStyles.form.input}
-          disabled={loading}
+          isRequired
+          className="mb-2 mt-4 flex-col items-start w-full"
+          classNames={{
+            label: "mb-2",
+            input: "py-1",
+            mainWrapper: "w-full",
+          }}
         />
-      </div>
-      <div className={authStyles.form.inputContainer}>
         <Input
           type="password"
           label="Password"
-          value={password}
+          labelPlacement="outside-left"
           onChange={e => setPassword(e.target.value)}
-          required
-          className={authStyles.form.input}
-          disabled={loading}
+          isRequired
+          className="mb-2 mt-4 flex-col items-start w-full"
+          classNames={{
+            label: "mb-2",
+            input: "py-1",
+            mainWrapper: "w-full",
+          }}
         />
-      </div>
-      <div className={authStyles.form.inputContainer}>
         <Input
           type="password"
           label="Confirm Password"
-          value={confirmPassword}
+          labelPlacement="outside-left"
           onChange={e => setConfirmPassword(e.target.value)}
-          required
-          className={authStyles.form.input}
-          disabled={loading}
+          isRequired
+          className="mb-2 mt-4 flex-col items-start w-full"
+          classNames={{
+            label: "mb-2",
+            input: "py-1",
+            mainWrapper: "w-full",
+          }}
         />
-      </div>
-      {error && <p className={authStyles.form.error}>{error}</p>}
-      <Button
-        type="submit"
-        variant="solid"
-        className={authStyles.form.submitButton}
-        disabled={loading}
-      >
-        {loading ? "Creating Account..." : "Sign Up"}
-      </Button>
-    </form>
+         {error && <p>{error}</p>}
+        <Button
+          type="submit"
+          color="primary"
+        >
+          {loading ? "Creating Account..." : "Sign Up"}
+        </Button>
+      </HeroForm>
+    </div>
   )
 }
