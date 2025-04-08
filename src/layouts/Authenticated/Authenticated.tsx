@@ -1,12 +1,11 @@
 "use client"
 
 import { useAuth } from "@/contexts/AuthContext"
-import { Button } from "@heroui/react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 export const Authenticated = ({ children }: { children: React.ReactNode }) => {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
@@ -15,20 +14,13 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, router])
 
-  const handleLogout = async () => {
-    try {
-      await logout()
-      router.push("/")
-    } catch (error) {
-      console.error("Failed to log out:", error)
-    }
-  }
-
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{children}</main>
+    <div className="h-[calc(100vh-6.5rem)] bg-gray-50">
+      <main className="max-w-4xl mx-auto px-6 lg:px-8" id="main-bit">
+        {children}
+      </main>
     </div>
   )
 }

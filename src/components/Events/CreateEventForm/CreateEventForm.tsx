@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Button, Input } from "@heroui/react"
+import { Button, Form as HeroForm, Input, Textarea } from "@heroui/react"
 import { useAuth } from "@/contexts/AuthContext"
 import { createEvent } from "@/lib/firebase/events"
 
@@ -52,54 +52,75 @@ export const CreateEventForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Input
-          type="text"
-          label={title ? title : "Enter title"}
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          required
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Input
-          type="datetime-local"
-          label=""
-          value={date}
-          onChange={e => setDate(e.target.value)}
-          required
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Input
-          type="text"
-          label={location ? location : "Enter location"}
-          value={location}
-          onChange={e => setLocation(e.target.value)}
-          required
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Input
-          type="text"
-          label={description ? description : "Enter description"}
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          className="w-full"
-        />
-      </div>
-      <Button
-        type="submit"
-        color="primary"
+    <HeroForm className="w-full" onSubmit={handleSubmit}>
+      <Input
+        id="this"
+        isRequired
+        value={title}
+        label="Event Title"
+        labelPlacement="outside-left"
+        name="title"
+        placeholder={title ? title : "Event title"}
+        onChange={e => setTitle(e.target.value)}
+        type="text"
+        className="mb-2 mt-4 flex-col items-start w-full"
+        classNames={{
+          label: "mb-2",
+          input: "py-1",
+          mainWrapper: "w-full",
+        }}
+      />
+      <Input
+        isRequired
+        type="datetime-local"
+        label="Date"
+        labelPlacement="outside-left"
+        name="date"
+        value={date}
+        onChange={e => setDate(e.target.value)}
+        className="mb-2 flex-col items-start"
+        classNames={{
+          label: "mb-2",
+          input: "py-1",
+          mainWrapper: "w-full",
+        }}
+      />
+
+      <Input
+        isRequired
+        type="text"
+        label="Location"
+        labelPlacement="outside-left"
+        name="location"
+        value={location}
+        onChange={e => setLocation(e.target.value)}
+        className="mb-2 flex-col items-start"
+        classNames={{
+          label: "mb-2",
+          input: "py-1",
+          mainWrapper: "w-full",
+        }}
+      />
+
+      <Textarea
+        label={"Enter description"}
+        value={description}
+        onChange={e => setDescription(e.target.value)}
+        required
         className="w-full"
-        disabled={loading}
-      >
-        {loading ? "Creating..." : "Create Event"}
-      </Button>
-    </form>
+        minRows={3} // This sets the minimum number of rows
+        maxRows={6} // This sets the maximum number of rows before scrolling
+      />
+      <div className="flex justify-end gap-2 pt-8">
+        <Button
+          type="submit"
+          color="primary"
+          className="w-full"
+          disabled={loading}
+        >
+          {loading ? "Creating..." : "Create Event"}
+        </Button>
+      </div>
+    </HeroForm>
   )
 }
