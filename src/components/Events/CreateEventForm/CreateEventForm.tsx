@@ -33,8 +33,8 @@ export const CreateEventForm = ({
         date,
         description,
         location,
-        attendeeIds: [user.uid],
         userId: user.uid,
+        attendeeIds: [user.uid],
       })
       onClose()
       onSuccess()
