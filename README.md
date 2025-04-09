@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-# Event Buddy
+# GoNoGo
 
 This is a simple project designed to make it easy to arrange tentative meetings with friends.
 
