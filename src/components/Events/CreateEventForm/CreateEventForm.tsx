@@ -16,6 +16,7 @@ export const CreateEventForm = ({
 }: CreateEventFormProps) => {
   const [title, setTitle] = useState("")
   const [date, setDate] = useState("")
+  const [time, setTime] = useState("")
   const [description, setDescription] = useState("")
   const [location, setLocation] = useState("")
   const [loading, setLoading] = useState(false)
@@ -27,10 +28,13 @@ export const CreateEventForm = ({
 
     setLoading(true)
 
+    const eventDate = date ? new Date(date) : new Date()
+
     try {
       await createEvent({
         title,
-        date,
+        date: eventDate,
+        time,
         description,
         location,
         userId: user.uid,
@@ -72,12 +76,28 @@ export const CreateEventForm = ({
       />
       <Input
         isRequired
-        type="datetime-local"
+        type="date"
         label="Date"
         labelPlacement="outside-left"
         name="date"
         value={date}
         onChange={e => setDate(e.target.value)}
+        className="mb-2 flex-col items-start"
+        classNames={{
+          label: "mb-2",
+          input: "py-1",
+          mainWrapper: "w-full",
+        }}
+      />
+
+      <Input
+        isRequired
+        type="time"
+        label="Time"
+        labelPlacement="outside-left"
+        name="time"
+        value={time}
+        onChange={e => setTime(e.target.value)}
         className="mb-2 flex-col items-start"
         classNames={{
           label: "mb-2",
@@ -112,11 +132,7 @@ export const CreateEventForm = ({
         maxRows={6} // This sets the maximum number of rows before scrolling
       />
       <div className="flex justify-end gap-2 pt-8">
-        <Button
-          type="submit"
-          className="w-full bg-sky-300"
-          disabled={loading}
-        >
+        <Button type="submit" className="w-full bg-sky-300" disabled={loading}>
           {loading ? "Creating..." : "Create Event"}
         </Button>
       </div>

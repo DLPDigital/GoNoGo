@@ -1,6 +1,7 @@
 "use client"
 
 import { Event } from "@/lib/firebase/events"
+import { formatDisplayDate } from "@/lib/utils/formatDate"
 import { Button, Card, CardFooter, CardHeader, CardBody } from "@heroui/react"
 import Link from "next/link"
 
@@ -19,6 +20,7 @@ export const EventCardLite = ({
   showEdit = true,
   showDelete = false,
 }: EventCardLiteProps) => {
+  console.log("event", event)
   return (
     <Card className="py-4 max-w-[600px] mx-auto">
       <Link href={`/events/${event.id}`} title={event.title}>
@@ -31,7 +33,7 @@ export const EventCardLite = ({
             Location: <strong>{event.location}</strong>
           </p>
           <p>
-            Date: <strong>{event.date}</strong>
+            Date: <strong>{formatDisplayDate(event.date)}</strong>
           </p>
         </CardBody>
       </Link>

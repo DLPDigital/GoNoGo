@@ -13,6 +13,7 @@ import {
 import { UserProfile } from "@/lib/firebase/users"
 import { User } from "firebase/auth"
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card"
+import { formatDisplayDate } from "@/lib/utils/formatDate"
 
 type Props = {
   event: Event
@@ -143,7 +144,7 @@ export const EventCardFull: React.FC<Props> = ({
               Location: <strong>{event.location}</strong>
             </p>
             <p>
-              Date: <strong>{event.date}</strong>
+              Date: <strong>{formatDisplayDate(event.date)}</strong>
             </p>
           </CardBody>
           <CardFooter className="justify-center gap-8">

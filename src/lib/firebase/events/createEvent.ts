@@ -14,9 +14,6 @@ export const createEvent = async (
   try {
     const thisUser = await getUserProfile(event.userId)
 
-    console.log('event', event)
-    console.log('thisUser', thisUser)
-
     // Initialize creator as confirmed participant
     const creatorParticipant: Participant = {
       uid: event.userId,
@@ -40,8 +37,11 @@ export const createEvent = async (
       participants.push(...pendingParticipants)
     }
 
+    const eventDate = event.date ? new Date(event.date) : new Date();
+
     const docRef = await addDoc(collection(db, "events"), {
       ...event,
+      date: eventDate,
       attendeeIds: [event.userId],
       attendees: [{ id: event.userId, name: thisUser?.username || "" }],
       participants: participants,

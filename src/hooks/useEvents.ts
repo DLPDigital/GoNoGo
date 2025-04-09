@@ -5,6 +5,7 @@ import {
   deleteEvent as deleteEventService,
 } from "@/lib/firebase/events"
 import { useAuth } from "@/contexts/AuthContext"
+import { getEventDateTime } from "@/lib/utils/getEventDateTime"
 
 export const useEvents = () => {
   const { user } = useAuth()
@@ -25,10 +26,10 @@ export const useEvents = () => {
       // Categorize events
       const upcoming: Event[] = []
       const past: Event[] = []
-      
+
       events.forEach(event => {
-        const eventDate = new Date(event.date)
-        if (eventDate >= now) {
+        const eventDateTime = getEventDateTime(event.date, event.time)
+        if (eventDateTime >= now) {
           upcoming.push(event)
         } else {
           past.push(event)
