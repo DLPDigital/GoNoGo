@@ -87,7 +87,7 @@ export const SignInForm = ({ invited }: SignInFormProps) => {
           }}
         />
         {error && <p>{error}</p>}
-        <Button type="submit" color="primary">
+        <Button type="submit" className="bg-sky-300">
           Sign In
         </Button>
       </HeroForm>

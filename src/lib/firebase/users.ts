@@ -12,15 +12,15 @@ export const createUserProfile = async (
   userId: string,
   email: string,
   username: string
-): Promise<void> => {
+): Promise<UserProfile> => {
   try {
     const userRef = doc(db, "users", userId)
-    await setDoc(userRef, {
-      uid: userId,
+    const userProfile = {uid: userId,
       email,
       username,
-      createdAt: new Date(),
-    })
+      createdAt: new Date(),}
+    await setDoc(userRef, userProfile)
+    return userProfile
   } catch (error) {
     console.error("Error creating user profile:", error)
     throw error

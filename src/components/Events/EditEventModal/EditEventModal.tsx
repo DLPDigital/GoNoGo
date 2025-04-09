@@ -1,7 +1,6 @@
 "use client"
 
 import { Event } from "@/lib/firebase/events"
-import { Button } from "@heroui/react"
 import { EditEventForm } from "../EditEventForm"
 
 interface EditEventModalProps {

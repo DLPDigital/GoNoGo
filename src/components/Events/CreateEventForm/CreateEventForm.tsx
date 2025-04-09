@@ -114,8 +114,7 @@ export const CreateEventForm = ({
       <div className="flex justify-end gap-2 pt-8">
         <Button
           type="submit"
-          color="primary"
-          className="w-full"
+          className="w-full bg-sky-300"
           disabled={loading}
         >
           {loading ? "Creating..." : "Create Event"}

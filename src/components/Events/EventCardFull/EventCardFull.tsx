@@ -78,23 +78,21 @@ export const EventCardFull: React.FC<Props> = ({
             <h3 className="text-lg font-medium mb-2">Your attendance</h3>
             <div className="flex flex-wrap gap-2">
               <Button
-                color={
-                  currentParticipant?.status === "confirmed"
-                    ? "primary"
-                    : "default"
+                className={
+                  currentParticipant?.status === "declined"
+                    ? "bg-amber-300"
+                    : "bg-sky-300"
                 }
-                // variant={currentParticipant?.status === "confirmed" ? "solid" : "outline"}
                 onPress={() => handleAttendanceChange("confirmed")}
               >
                 I'll attend
               </Button>
               <Button
-                color={
+                className={
                   currentParticipant?.status === "declined"
-                    ? "danger"
-                    : "default"
+                    ? "bg-amber-300"
+                    : "bg-sky-300"
                 }
-                // variant={currentParticipant?.status === "declined" ? "solid" : "outline"}
                 onPress={() => handleAttendanceChange("declined")}
               >
                 Don't want to go anymore
@@ -151,14 +149,14 @@ export const EventCardFull: React.FC<Props> = ({
           <CardFooter className="justify-center gap-8">
             {handleShare && (
               <>
-                <Button color="primary" onPress={handleShare}>
+                <Button className="bg-sky-300" onPress={handleShare}>
                   Share Event
                 </Button>
                 <Toaster />
               </>
             )}
             {handleJoinEvent && !event.attendeeIds.includes(user!.uid) && (
-              <Button color="primary" onPress={handleJoinEvent}>
+              <Button className="bg-sky-300" onPress={handleJoinEvent}>
                 Join Event
               </Button>
             )}

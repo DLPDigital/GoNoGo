@@ -8,12 +8,13 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth"
-import { createUserProfile } from "@/lib/firebase/users"
+import { createUserProfile, UserProfile } from "@/lib/firebase/users"
 import { auth } from "@/lib/firebase/config"
 import { useRouter } from "next/navigation"
 
 interface AuthContextType {
   user: User | null
+  userProfile: UserProfile | null
   loading: boolean
   signUp: (
     email: string,
@@ -30,6 +31,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [userProfile, setUserProfile] = useState<any | null>(null)
   const router = useRouter()
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -54,10 +56,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password
       )
       const user = userCredential.user
-
       // Create a user profile with the username
-      await createUserProfile(user.uid, email, username)
-
+      const userProfile = await createUserProfile(user.uid, email, username)
+      setUserProfile(userProfile)
       setUser(user)
       if (!invited) {
         router.push("/dashboard")
@@ -79,6 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const value = {
     user,
+    userProfile,
     loading,
     signUp,
     signIn,

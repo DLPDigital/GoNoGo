@@ -31,8 +31,8 @@ const DashboardPage: React.FC = () => {
     <Authenticated>
       <div className="pt-8 pb-4">
         <IntroText />
-        <div className="flex justify-between items-center mt-8">
-          <Button color="primary" onPress={() => setShowCreateEvent(true)}>
+        <div className="flex justify-center items-center mt-8">
+          <Button className="bg-sky-300" onPress={() => setShowCreateEvent(true)}>
             Create New Event
           </Button>
         </div>

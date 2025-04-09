@@ -37,13 +37,13 @@ export const EventCardLite = ({
       </Link>
       <CardFooter className="gap-8">
         {showEdit && onEdit && (
-          <Button color="primary" onPress={() => onEdit(event)}>
+          <Button className="bg-sky-300" onPress={() => onEdit(event)}>
             Edit
           </Button>
         )}
 
         {showDelete && onDelete && (
-          <Button color="danger" onPress={() => onDelete(event.id!)}>
+          <Button className="bg-amber-300" onPress={() => onDelete(event.id!)}>
             Delete
           </Button>
         )}

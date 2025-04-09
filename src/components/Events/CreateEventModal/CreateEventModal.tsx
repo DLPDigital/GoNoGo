@@ -21,7 +21,7 @@ export const CreateEventModal = ({
       <div className="bg-white rounded-lg p-6 max-w-md w-full">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Create New Event</h2>
-          <Button color="primary" onPress={onClose}>
+          <Button className="bg-sky-300" onPress={onClose}>
             Cancel
           </Button>
         </div>

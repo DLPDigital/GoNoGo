@@ -103,7 +103,7 @@ export const SignUpForm = ({ invited }: SignUpFormProps) => {
           }}
         />
         {error && <p>{error}</p>}
-        <Button type="submit" color="primary">
+        <Button type="submit" className="bg-sky-300">
           {loading ? "Creating Account..." : "Sign Up"}
         </Button>
       </HeroForm>

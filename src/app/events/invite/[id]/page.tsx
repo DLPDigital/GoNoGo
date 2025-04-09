@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { addUserToEvent, Event } from "@/lib/firebase/events"
 import { getEventById } from "@/lib/firebase/events"
-import { Button } from "@heroui/react"
 import { AuthForms } from "@/components/Auth/AuthForms"
 import { EventCardFull } from "@/components/Events/EventCardFull"
 

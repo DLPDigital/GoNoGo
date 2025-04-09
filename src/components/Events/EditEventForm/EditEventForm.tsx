@@ -99,10 +99,10 @@ export const EditEventForm = ({
         maxRows={6} // This sets the maximum number of rows before scrolling
       />
       <div className="flex justify-end gap-2 pt-8">
-        <Button type="submit" variant="bordered">
+        <Button type="submit" className="bg-sky-300">
           Submit
         </Button>
-        <Button color="primary" onPress={onClose}>
+        <Button onPress={onClose} className="bg-amber-300">
           Cancel
         </Button>
       </div>

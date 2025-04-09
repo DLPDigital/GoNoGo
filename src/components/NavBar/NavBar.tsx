@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 
 export const NavBar: React.FC = () => {
-  const { user, logout } = useAuth()
+  const { user, userProfile, logout } = useAuth()
   const router = useRouter()
 
   const handleLogout = async () => {
@@ -25,8 +25,8 @@ export const NavBar: React.FC = () => {
         <NavbarContent className="gap-4" justify="center" id="this-one">
           <NavbarItem id="nav-item">
             <Link color="foreground" href="/dashboard">
-              <p className="font-rock3d text-3xl md:text-5xl text-center font-bold text-white">
-                Event Buddy
+              <p className="font-poppins text-xl md:text-5xl text-center font-bold text-white">
+                GoNoGo
               </p>
             </Link>
           </NavbarItem>
@@ -34,13 +34,9 @@ export const NavBar: React.FC = () => {
         {user && (
           <NavbarContent justify="end">
             <NavbarItem>
-              <Button
-                color="primary"
-                onPress={handleLogout}
-                className="text-white"
-              >
-                Sign Out
-              </Button>
+              <p onClick={handleLogout} className="text-white">
+                Sign out {userProfile ? userProfile.username : ""}
+              </p>
             </NavbarItem>
           </NavbarContent>
         )}
