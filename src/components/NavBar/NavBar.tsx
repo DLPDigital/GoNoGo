@@ -17,7 +17,7 @@ export const NavBar: React.FC = () => {
     }
   }
   return (
-    <Navbar position="sticky" className="px-4 py-8 bg-red-900 top-0">
+    <Navbar position="sticky" className="px-4 py-8 bg-red-900 top-0 z-50">
       <div
         className="max-w-4xl w-full mx-auto flex justify-between items-center"
         id="nav-container"

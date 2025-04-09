@@ -11,8 +11,8 @@ import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card"
 
 type Props = {
   event: Event
-  handleShare: () => void
-  handleJoinEvent: () => void
+  handleShare?: () => void
+  handleJoinEvent?: () => void
   user?: UserProfile | User
 }
 
@@ -42,15 +42,23 @@ export const EventCardFull: React.FC<Props> = ({
         <span className="text-tiny uppercase font-bold">Event</span>
         <h1 className="font-bold text-xl">{event.title}</h1>
         <p>{event.description}</p>
-        <p>Location: <strong>{event.location}</strong></p>
-        <p>Date: <strong>{event.date}</strong></p>
+        <p>
+          Location: <strong>{event.location}</strong>
+        </p>
+        <p>
+          Date: <strong>{event.date}</strong>
+        </p>
       </CardBody>
       <CardFooter className="justify-center gap-8">
-        <Button color="primary" onPress={handleShare}>
-          Share Event
-        </Button>
-        <Toaster />
-        {!event.attendeeIds.includes(user!.uid) && (
+        {handleShare && (
+          <>
+            <Button color="primary" onPress={handleShare}>
+              Share Event
+            </Button>
+            <Toaster />
+          </>
+        )}
+        {handleJoinEvent && !event.attendeeIds.includes(user!.uid) && (
           <Button color="primary" onPress={handleJoinEvent}>
             Join Event
           </Button>

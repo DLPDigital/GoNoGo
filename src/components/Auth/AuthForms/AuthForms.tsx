@@ -34,7 +34,7 @@ export const AuthForms = ({ invited }: Props) => {
             </Button>
           </div>
         </div>
-        {isSignIn ? <SignInForm invited={invited} /> : <SignUpForm />}
+        {isSignIn ? <SignInForm invited={invited} /> : <SignUpForm invited={invited} />}
       </div>
     </div>
   )

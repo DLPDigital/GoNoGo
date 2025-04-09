@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation"
 interface AuthContextType {
   user: User | null
   loading: boolean
-  signUp: (email: string, password: string, name: string) => Promise<void>
+  signUp: (email: string, password: string, name: string, invited?: boolean) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
-  const signUp = async (email: string, password: string, username: string) => {
+  const signUp = async (email: string, password: string, username: string, invited?: boolean) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const user = userCredential.user
@@ -45,7 +45,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       await createUserProfile(user.uid, email, username)
   
       setUser(user)
-      router.push("/dashboard")
+      if (!invited) {
+        router.push("/dashboard")
+      }
     } catch (error) {
       console.error("Error signing up:", error)
       throw error
@@ -53,6 +55,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   const signIn = async (email: string, password: string) => {
+    console.log('entering')
     await signInWithEmailAndPassword(auth, email, password)
   }
 

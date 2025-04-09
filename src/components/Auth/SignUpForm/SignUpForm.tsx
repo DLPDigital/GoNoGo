@@ -5,7 +5,11 @@ import { useAuth } from "@/contexts/AuthContext"
 import { Button, Form as HeroForm, Input } from "@heroui/react"
 import { FirebaseError } from "firebase/app"
 
-export const SignUpForm = () => {
+type SignUpFormProps = {
+  invited?: boolean;
+}
+
+export const SignUpForm = ({ invited }: SignUpFormProps) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -24,7 +28,7 @@ export const SignUpForm = () => {
     }
 
     try {
-      await signUp(email, password, username)
+      await signUp(email, password, username, invited)
     } catch (err) {
       if (err instanceof FirebaseError) {
         if (err instanceof FirebaseError) {
