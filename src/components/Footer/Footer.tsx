@@ -10,7 +10,7 @@ export const Footer: React.FC = () => (
     <div className="flex flex-col items-center justify-center py-8 mt-8">
       <p className="text-white">
         GoNoGo is built with NextJS, HeroUI, Tailwind and Firebase, hosted on
-        Netflify.
+        Netlify.
       </p>
       <p className="text-white">
         View on{" "}

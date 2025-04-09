@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { auth, db } from "@/lib/firebase/config"
-import { AuthForms } from "@/components/Auth/AuthForms"
+import { Auth } from "@/components/Auth/Auth"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { IntroText } from "@/components/IntroText"
@@ -23,9 +23,9 @@ export default function Home() {
   }, [user, router])
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-4">
+    <div className="flex flex-col items-center min-h-screen h-auto p-4" id="page-container">
       <IntroText />
-      <AuthForms />
+      <Auth />
     </div>
   )
 }

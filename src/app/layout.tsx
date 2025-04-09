@@ -34,7 +34,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <NavBar />
-          <div className="max-w-4xl w-full mx-auto h-[calc(100vh-6.5rem)]">
+          <div className="max-w-4xl w-full mx-auto h-auto">
             {children}
           </div>
           <Footer />

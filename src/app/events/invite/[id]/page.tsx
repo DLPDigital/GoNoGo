@@ -5,8 +5,8 @@ import { useParams, useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { addUserToEvent, Event } from "@/lib/firebase/events"
 import { getEventById } from "@/lib/firebase/events"
-import { AuthForms } from "@/components/Auth/AuthForms"
 import { EventCardFull } from "@/components/Events/EventCardFull"
+import { Auth } from "@/components/Auth"
 
 export default function EventInvitePage() {
   const { id } = useParams()
@@ -80,7 +80,7 @@ export default function EventInvitePage() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col gap-4">
       <EventCardFull event={event} user={user ?? undefined} />
-      <AuthForms invited />
+      <Auth invited />
     </div>
   )
 }

@@ -9,7 +9,7 @@ type Props = {
   invited?: boolean
 }
 
-export const AuthForms = ({ invited }: Props) => {
+export const Auth = ({ invited }: Props) => {
   const [isSignIn, setIsSignIn] = useState(true)
 
   return (
@@ -30,7 +30,9 @@ export const AuthForms = ({ invited }: Props) => {
           </Button>
         </div>
       </div>
-      <h2 className="font-poppins">{isSignIn ? "Sign In" : "Create Account"}</h2>
+      <h2 className="font-poppins">
+        {isSignIn ? "Sign In" : "Create Account"}
+      </h2>
       {isSignIn ? (
         <SignInForm invited={invited} />
       ) : (

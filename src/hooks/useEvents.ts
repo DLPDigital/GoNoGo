@@ -69,11 +69,6 @@ export const useEvents = () => {
     fetchEvents()
   }, [fetchEvents])
 
-  // const upcomingEvents = events.filter(
-  //   event => new Date(event.date) > new Date()
-  // )
-  // const pastEvents = events.filter(event => new Date(event.date) <= new Date())
-
   return {
     loading,
     upcomingPendingEvents,
