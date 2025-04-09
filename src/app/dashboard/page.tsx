@@ -9,6 +9,7 @@ import { CreateEventModal } from "@/components/Events/CreateEventModal"
 import { EditEventModal } from "@/components/Events/EditEventModal"
 import { EventCategorySection } from "@/components/Events/EventCategorySection"
 import { IntroText } from "@/components/IntroText"
+import { HaveToGoEvents } from "@/components/Events/HaveToGoEvents"
 
 const DashboardPage: React.FC = () => {
   const [showCreateEvent, setShowCreateEvent] = useState(false)
@@ -18,9 +19,10 @@ const DashboardPage: React.FC = () => {
     upcomingPendingEvents,
     upcomingConfirmedEvents,
     upcomingDeclinedEvents,
+    upcomingHaveToGoEvents,
     pastEvents,
     fetchEvents,
-    deleteEvent
+    deleteEvent,
   } = useEvents()
 
   const handleEventUpdated = () => {
@@ -32,12 +34,15 @@ const DashboardPage: React.FC = () => {
       <div className="pt-8 pb-4">
         <IntroText />
         <div className="flex justify-center items-center mt-8">
-          <Button className="bg-sky-300" onPress={() => setShowCreateEvent(true)}>
+          <Button
+            className="bg-sky-300"
+            onPress={() => setShowCreateEvent(true)}
+          >
             Create New Event
           </Button>
         </div>
       </div>
-      
+
       <div className="space-y-6 pt-12">
         <CreateEventModal
           isOpen={showCreateEvent}
@@ -62,7 +67,7 @@ const DashboardPage: React.FC = () => {
             emptyMessage="No pending events"
             badgeColor="bg-yellow-100 text-yellow-800"
           />
-          
+
           <EventCategorySection
             title="Upcoming Confirmed Events"
             events={upcomingConfirmedEvents}
@@ -72,7 +77,24 @@ const DashboardPage: React.FC = () => {
             emptyMessage="No confirmed events"
             badgeColor="bg-green-100 text-green-800"
           />
-          
+
+          {/* <HaveToGoEvents
+            events={upcomingHaveToGoEvents}
+            loading={loading}
+            onEdit={setEditingEvent}
+            onDelete={deleteEvent}
+          /> */}
+
+          <EventCategorySection
+            title="Upcoming Events You Have to Go"
+            events={upcomingHaveToGoEvents}
+            loading={loading}
+            onEdit={setEditingEvent}
+            onDelete={deleteEvent}
+            emptyMessage="No events"
+            badgeColor="bg-red-100 text-red-800"
+          />
+
           <EventCategorySection
             title="Upcoming Declined Events"
             events={upcomingDeclinedEvents}
@@ -81,8 +103,9 @@ const DashboardPage: React.FC = () => {
             onDelete={deleteEvent}
             emptyMessage="No declined events"
             badgeColor="bg-red-100 text-red-800"
+            showDelete
           />
-          
+
           <EventCategorySection
             title="Past Events"
             events={pastEvents}

@@ -101,30 +101,34 @@ export const EventCardFull: React.FC<Props> = ({
             </div>
           </div>
         )}
-        <div className="mt-4">
-          <h3 className="text-lg font-medium mb-2">Participants</h3>
-          <ul className="divide-y">
-            {event.participants.map((participant, index) => (
-              <li
-                key={index}
-                className="py-2 flex justify-between items-center"
-              >
-                <span>{participant.name || participant.email}</span>
-                <span
-                  className={`text-sm ${
-                    participant.status === "confirmed"
-                      ? "text-green-600"
-                      : participant.status === "declined"
-                        ? "text-red-600"
-                        : "text-yellow-600"
-                  }`}
-                >
-                  {participant.status.charAt(0).toUpperCase() +
-                    participant.status.slice(1)}
-                </span>
-              </li>
-            ))}
-          </ul>
+        <div className="mt-4 mb-8">
+          {event.status === "confirmed" && (
+            <>
+              <h3 className="text-lg font-medium mb-2">Participants</h3>
+              <ul className="divide-y">
+                {event.participants.map((participant, index) => (
+                  <li
+                    key={index}
+                    className="py-2 flex justify-between items-center"
+                  >
+                    <span>{participant.name || participant.email}</span>
+                    <span
+                      className={`text-sm ${
+                        participant.status === "confirmed"
+                          ? "text-green-600"
+                          : participant.status === "declined"
+                            ? "text-red-600"
+                            : "text-yellow-600"
+                      }`}
+                    >
+                      {participant.status.charAt(0).toUpperCase() +
+                        participant.status.slice(1)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
         <Card className="py-4 max-w-[600px] mx-auto">
           <CardHeader className="overflow-visible py-2">

@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button, Form as HeroForm, Input } from "@heroui/react"
-import { FirebaseError } from "firebase/app"
+import { addUserToEvent } from "@/lib/firebase/events"
+import { useRouter, useParams } from "next/navigation"
 
 type SignUpFormProps = {
   invited?: boolean
@@ -16,7 +17,9 @@ export const SignUpForm = ({ invited }: SignUpFormProps) => {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [username, setUsername] = useState("")
-  const { signUp } = useAuth()
+  const { signUp, user } = useAuth()
+  const router = useRouter()
+  const params = useParams()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,22 +31,40 @@ export const SignUpForm = ({ invited }: SignUpFormProps) => {
     }
 
     try {
-      await signUp(email, password, username, invited)
-    } catch (err) {
-      if (err instanceof FirebaseError) {
-        if (err instanceof FirebaseError) {
-          if (err.code === "auth/email-already-in-use") {
-            setError("Email already in use")
-          } else if (err.code === "auth/weak-password") {
-            setError("Password should be at least 6 characters")
+      // Sign up the user
+      await signUp(email, password, username)
+
+      // Wait for auth state to update
+      setTimeout(() => {
+        if (invited) {
+          const id = params?.id as string
+
+          const currentUser = user
+
+          if (id && currentUser) {
+            try {
+              // Add the new user to the event
+              addUserToEvent(id, currentUser.uid, currentUser.email!)
+                .then(() => {
+                  router.push(`/events/${id}`)
+                })
+                .catch(error => {
+                  console.error("Error joining event:", error)
+                  setError("Failed to join event")
+                })
+            } catch (error) {
+              console.error("Error joining event:", error)
+              setError("Failed to join event")
+            }
           } else {
-            setError("Failed to create account")
+            router.push(`/events/${id}`)
           }
-          console.error(err)
+        } else {
+          router.push("/dashboard")
         }
-      }
-    } finally {
-      setLoading(false)
+      }, 1000) // Give auth state a moment to update
+    } catch (err) {
+      // Error handling
     }
   }
 
