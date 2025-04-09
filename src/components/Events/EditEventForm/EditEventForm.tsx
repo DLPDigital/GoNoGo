@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button, Form as HeroForm, Input, Textarea } from "@heroui/react"
 import { Event, updateEvent } from "@/lib/firebase/events"
+import { formatDateForInput, formatTimeForInput } from "@/lib/utils/formatDateForInput"
 
 interface EditEventFormProps {
   event: Event
@@ -16,18 +17,28 @@ export const EditEventForm = ({
   onSuccess,
 }: EditEventFormProps) => {
   const [title, setTitle] = useState(event.title)
-  const [date, setDate] = useState(event.date)
+  const [date, setDate] = useState(formatDateForInput(event.date))
+  const [time, setTime] = useState(formatTimeForInput(event.date, event.time))
   const [description, setDescription] = useState(event.description || "")
   const [location, setLocation] = useState(event.location)
+
+  const eventDate = date ? new Date(date) : new Date()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!event.id) return
 
     try {
+      const dateObj = new Date(date);
+      if (time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        dateObj.setHours(hours);
+        dateObj.setMinutes(minutes);
+      }
       await updateEvent(event.id, {
         title,
-        date,
+        date: dateObj,
+        time,
         description,
         location,
       })
@@ -59,12 +70,27 @@ export const EditEventForm = ({
       />
       <Input
         isRequired
-        type="datetime-local"
+        type="date"
         label="Date"
         labelPlacement="outside-left"
         name="date"
         value={date}
         onChange={e => setDate(e.target.value)}
+        className="mb-2 flex-col items-start"
+        classNames={{
+          label: "mb-2",
+          input: "py-1",
+          mainWrapper: "w-full",
+        }}
+      />
+      <Input
+        isRequired
+        type="time"
+        label="Time"
+        labelPlacement="outside-left"
+        name="time"
+        value={time}
+        onChange={e => setTime(e.target.value)}
         className="mb-2 flex-col items-start"
         classNames={{
           label: "mb-2",

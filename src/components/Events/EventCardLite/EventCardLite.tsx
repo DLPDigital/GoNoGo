@@ -35,6 +35,9 @@ export const EventCardLite = ({
           <p>
             Date: <strong>{formatDisplayDate(event.date)}</strong>
           </p>
+          <p>
+            Time: <strong>{event.time}</strong>
+          </p>
         </CardBody>
       </Link>
       <CardFooter className="gap-8">
