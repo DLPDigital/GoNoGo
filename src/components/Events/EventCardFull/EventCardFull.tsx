@@ -146,6 +146,9 @@ export const EventCardFull: React.FC<Props> = ({
             <p>
               Date: <strong>{formatDisplayDate(event.date)}</strong>
             </p>
+            <p>
+              Time: <strong>{event.time}</strong>
+            </p>
           </CardBody>
           <CardFooter className="justify-center gap-8">
             {handleShare && (
