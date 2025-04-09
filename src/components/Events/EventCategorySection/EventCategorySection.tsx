@@ -10,6 +10,7 @@ type EventCategorySectionProps = {
   onDelete?: (eventId: string) => void
   emptyMessage?: string
   badgeColor?: string
+  showDelete?: boolean
 }
 
 export const EventCategorySection: React.FC<EventCategorySectionProps> = ({
@@ -20,6 +21,7 @@ export const EventCategorySection: React.FC<EventCategorySectionProps> = ({
   onDelete,
   emptyMessage = "No events found",
   badgeColor,
+  showDelete = false,
 }) => {
   return (
     <div className="bg-white shadow rounded-lg p-6">
@@ -44,6 +46,7 @@ export const EventCategorySection: React.FC<EventCategorySectionProps> = ({
               event={event}
               onEdit={onEdit ? () => onEdit(event) : undefined}
               onDelete={onDelete ? () => onDelete(event.id!) : undefined}
+              showDelete={showDelete}
             />
           ))}
         </div>
