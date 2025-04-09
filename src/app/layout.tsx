@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: "Event Buddy is a platform for creating and managing events",
 }
 
-const mainBackgroundColor = "bg-gray-100"
+const mainBackgroundColor = "bg-neutral-100"
 
 export default function RootLayout({
   children,

@@ -10,7 +10,24 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: { rock3d: ["Rock3D", "sans-serif"] },
+      fontFamily: {
+        // sans: ["Roboto Variable", "Roboto", "sans-serif"],
+        roboto: ["Roboto Variable", "Roboto", "sans-serif"],
+        rock3d: ["Rock3D", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+      },
+      fontWeight: {
+        // Assuming Roboto variable supports these weights
+        thin: "100",
+        extralight: "200",
+        light: "300",
+        normal: "400",
+        medium: "500",
+        semibold: "600",
+        bold: "700",
+        extrabold: "800",
+        black: "900",
+      },
     },
   },
   plugins: [heroui()],
