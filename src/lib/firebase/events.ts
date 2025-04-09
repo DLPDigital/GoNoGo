@@ -13,6 +13,15 @@ import {
 } from "firebase/firestore"
 import { getUserProfile } from "./users"
 
+export type AttendanceStatus = "pending" | "confirmed" | "declined"
+
+export interface Participant {
+  uid: string
+  name: string
+  email: string
+  status: AttendanceStatus
+}
+
 export interface Event {
   id?: string
   title: string
@@ -23,19 +32,97 @@ export interface Event {
   attendeeIds: string[]
   attendees: { id: string; name: string }[]
   createdAt: Date
+  participants: Participant[]
+  status: "pending" | "confirmed" | "cancelled"
+}
+
+export async function updateParticipantStatus(
+  eventId: string,
+  userId: string,
+  status: AttendanceStatus
+): Promise<void> {
+  const eventRef = doc(db, "events", eventId)
+
+  // Get current event
+  const eventSnap = await getDoc(eventRef)
+  if (!eventSnap.exists()) {
+    throw new Error("Event not found")
+  }
+
+  const eventData = eventSnap.data() as Event
+
+  // Update participant status
+  const updatedParticipants = eventData.participants.map(participant =>
+    participant.uid === userId ? { ...participant, status } : participant
+  )
+
+  // Determine event status
+  let eventStatus = eventData.status
+
+  // If a participant confirms attendance, mark as confirmed
+  if (status === "confirmed" && eventStatus === "pending") {
+    eventStatus = "confirmed"
+  }
+
+  // If all participants have declined, mark as cancelled
+  const allDeclined = updatedParticipants.every(p => p.status === "declined")
+  if (allDeclined && updatedParticipants.length > 0) {
+    eventStatus = "cancelled"
+  }
+
+  // Update the event
+  await updateDoc(eventRef, {
+    participants: updatedParticipants,
+    status: eventStatus,
+  })
 }
 
 export const createEvent = async (
-  event: Omit<Event, "id" | "createdAt" | "attendees">
+  event: Omit<
+    Event,
+    "id" | "createdAt" | "attendees" | "participants" | "status"
+  > & {
+    participantEmails?: string[]
+  }
 ) => {
   try {
     const thisUser = await getUserProfile(event.userId)
+
+    console.log('event', event)
+    console.log('thisUser', thisUser)
+
+    // Initialize creator as confirmed participant
+    const creatorParticipant: Participant = {
+      uid: event.userId,
+      name: thisUser?.username || "",
+      email: thisUser?.email || "",
+      status: "confirmed" as AttendanceStatus,
+    }
+
+    // Initialize invited participants with pending status
+    const participants: Participant[] = [creatorParticipant]
+
+    // Add invited participants if any
+    if (event.participantEmails && event.participantEmails.length > 0) {
+      const pendingParticipants = event.participantEmails.map(email => ({
+        uid: "", // Will be filled when user accepts invitation
+        name: "",
+        email,
+        status: "pending" as AttendanceStatus,
+      }))
+
+      participants.push(...pendingParticipants)
+    }
+
     const docRef = await addDoc(collection(db, "events"), {
       ...event,
       attendeeIds: [event.userId],
       attendees: [{ id: event.userId, name: thisUser?.username || "" }],
+      participants: participants,
+      status: "pending", // Initial status is pending until participants confirm
       createdAt: new Date(),
     })
+
     return docRef.id
   } catch (error) {
     console.error("Error creating event:", error)
@@ -128,7 +215,8 @@ export const getEventById = async (eventId: string) => {
 
 export const addUserToEvent = async (
   eventId: string,
-  userId: string
+  userId: string,
+  userEmail?: string
 ): Promise<void> => {
   try {
     const eventRef = doc(db, "events", eventId)
@@ -139,10 +227,15 @@ export const addUserToEvent = async (
     }
 
     const eventData = eventDoc.data() as Event
+    const userProfile = await getUserProfile(userId)
 
-    // Initialize arrays if they don't exist (important!)
+    const userName = userProfile?.username || "Unknown User"
+    const userEmailToUse = userProfile?.email || userEmail || ""
+
+    // Initialize arrays if they don't exist
     const attendees = eventData.attendees || []
     const attendeeIds = eventData.attendeeIds || []
+    let participants = eventData.participants || []
 
     // Check if the user is already an attendee
     if (attendeeIds.includes(userId)) {
@@ -150,19 +243,49 @@ export const addUserToEvent = async (
       return
     }
 
-    const userProfile = await getUserProfile(userId)
-    if (!userProfile) {
-      throw new Error("User profile not found")
-    }
-
     // Add the user to the attendees arrays
-    attendees.push({ id: userId, name: userProfile.username })
+    attendees.push({ id: userId, name: userName })
     attendeeIds.push(userId)
 
-    // Update the event document with the new attendees arrays
+    // If user was a pending participant (matched by email), update their info
+    if (userEmailToUse) {
+      const participantIndex = participants.findIndex(
+        p =>
+          (p.email === userEmailToUse && p.uid === "") || // Match by email for pending participants
+          p.uid === userId // Match by uid for existing participants
+      )
+
+      if (participantIndex >= 0) {
+        // Update the pending participant with the user's info
+        participants[participantIndex] = {
+          ...participants[participantIndex],
+          uid: userId,
+          name: userName,
+          status: "confirmed" as AttendanceStatus,
+        }
+      } else {
+        // Add as a new confirmed participant if not found
+        participants.push({
+          uid: userId,
+          name: userName,
+          email: userEmailToUse,
+          status: "confirmed" as AttendanceStatus,
+        })
+      }
+    }
+
+    // Determine if event status should change
+    let eventStatus = eventData.status
+    if (eventStatus === "pending") {
+      eventStatus = "confirmed"
+    }
+
+    // Update the event document
     await updateDoc(eventRef, {
-      attendees: attendees,
-      attendeeIds: attendeeIds,
+      attendees,
+      attendeeIds,
+      participants,
+      status: eventStatus,
     })
   } catch (error) {
     console.error("Error adding user to event:", error)

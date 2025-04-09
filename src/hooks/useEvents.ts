@@ -7,20 +7,45 @@ import {
 import { useAuth } from "@/contexts/AuthContext"
 
 export const useEvents = () => {
-  const [events, setEvents] = useState<Event[]>([])
-  const [loading, setLoading] = useState(true)
   const { user } = useAuth()
+  const [loading, setLoading] = useState(true)
+  const [upcomingPendingEvents, setUpcomingPendingEvents] = useState<Event[]>([])
+  const [upcomingConfirmedEvents, setUpcomingConfirmedEvents] = useState<Event[]>([])
+  const [upcomingDeclinedEvents, setUpcomingDeclinedEvents] = useState<Event[]>([])
+  const [pastEvents, setPastEvents] = useState<Event[]>([])
 
   const fetchEvents = useCallback(async () => {
-    if (!user) {
-      setLoading(false)
-      return
-    }
+    if (!user) return
+    
+    setLoading(true)
     try {
-      const userEvents = await getUserEvents(user.uid)
-      setEvents(userEvents)
+      const events = await getUserEvents(user.uid)
+      const now = new Date()
+      
+      // Categorize events
+      const upcoming: Event[] = []
+      const past: Event[] = []
+      
+      events.forEach(event => {
+        const eventDate = new Date(event.date)
+        if (eventDate >= now) {
+          upcoming.push(event)
+        } else {
+          past.push(event)
+        }
+      })
+      
+      // Further categorize upcoming events by status
+      const pending = upcoming.filter(event => event.status === "pending")
+      const confirmed = upcoming.filter(event => event.status === "confirmed")
+      const declined = upcoming.filter(event => event.status === "cancelled")
+      
+      setUpcomingPendingEvents(pending)
+      setUpcomingConfirmedEvents(confirmed)
+      setUpcomingDeclinedEvents(declined)
+      setPastEvents(past)
     } catch (error) {
-      console.error("Failed to fetch events:", error)
+      console.error("Error fetching events:", error)
     } finally {
       setLoading(false)
     }
@@ -44,15 +69,16 @@ export const useEvents = () => {
     fetchEvents()
   }, [fetchEvents])
 
-  const upcomingEvents = events.filter(
-    event => new Date(event.date) > new Date()
-  )
-  const pastEvents = events.filter(event => new Date(event.date) <= new Date())
+  // const upcomingEvents = events.filter(
+  //   event => new Date(event.date) > new Date()
+  // )
+  // const pastEvents = events.filter(event => new Date(event.date) <= new Date())
 
   return {
-    events,
     loading,
-    upcomingEvents,
+    upcomingPendingEvents,
+    upcomingConfirmedEvents,
+    upcomingDeclinedEvents,
     pastEvents,
     fetchEvents,
     deleteEvent,

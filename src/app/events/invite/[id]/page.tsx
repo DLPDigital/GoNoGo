@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
-import { Event } from "@/lib/firebase/events"
+import { addUserToEvent, Event } from "@/lib/firebase/events"
 import { getEventById } from "@/lib/firebase/events"
 import { Button } from "@heroui/react"
 import { AuthForms } from "@/components/Auth/AuthForms"
@@ -32,6 +32,32 @@ export default function EventInvitePage() {
 
     fetchEvent()
   }, [id])
+
+  useEffect(() => {
+    if (user && event) {
+      // If the user is logged in and accepting an invitation
+      const userEmail = user.email;
+      const isPendingParticipant = event.participants.some(
+        p => p.email === userEmail && p.uid === ""
+      );
+      
+      if (isPendingParticipant) {
+        // Update the user's status in the event
+        addUserToEvent(id as string, user.uid)
+          .then(() => {
+            // Redirect to the event page
+            router.push(`/events/${id}`);
+          })
+          .catch(error => {
+            console.error("Failed to join event:", error);
+            setError("Failed to join event");
+          });
+      } else {
+        // If not a pending participant, just redirect
+        router.push(`/events/${id}`);
+      }
+    }
+  }, [user, event, id, router]);
 
   useEffect(() => {
     if (user && event) {

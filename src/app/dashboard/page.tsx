@@ -7,15 +7,21 @@ import { Event } from "@/lib/firebase/events"
 import { useEvents } from "@/hooks/useEvents"
 import { CreateEventModal } from "@/components/Events/CreateEventModal"
 import { EditEventModal } from "@/components/Events/EditEventModal"
-import { UpcomingEvents } from "@/components/Events/UpcomingEvents"
-import { PastEvents } from "@/components/Events/PastEvents"
+import { EventCategorySection } from "@/components/Events/EventCategorySection"
 import { IntroText } from "@/components/IntroText"
 
 const DashboardPage: React.FC = () => {
   const [showCreateEvent, setShowCreateEvent] = useState(false)
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
-  const { loading, upcomingEvents, pastEvents, fetchEvents, deleteEvent } =
-    useEvents()
+  const {
+    loading,
+    upcomingPendingEvents,
+    upcomingConfirmedEvents,
+    upcomingDeclinedEvents,
+    pastEvents,
+    fetchEvents,
+    deleteEvent
+  } = useEvents()
 
   const handleEventUpdated = () => {
     fetchEvents()
@@ -31,6 +37,7 @@ const DashboardPage: React.FC = () => {
           </Button>
         </div>
       </div>
+      
       <div className="space-y-6 pt-12">
         <CreateEventModal
           isOpen={showCreateEvent}
@@ -46,16 +53,42 @@ const DashboardPage: React.FC = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <UpcomingEvents
-            events={upcomingEvents}
+          <EventCategorySection
+            title="Upcoming Pending Events"
+            events={upcomingPendingEvents}
             loading={loading}
             onEdit={setEditingEvent}
             onDelete={deleteEvent}
+            emptyMessage="No pending events"
+            badgeColor="bg-yellow-100 text-yellow-800"
           />
-          <PastEvents
+          
+          <EventCategorySection
+            title="Upcoming Confirmed Events"
+            events={upcomingConfirmedEvents}
+            loading={loading}
+            onEdit={setEditingEvent}
+            onDelete={deleteEvent}
+            emptyMessage="No confirmed events"
+            badgeColor="bg-green-100 text-green-800"
+          />
+          
+          <EventCategorySection
+            title="Upcoming Declined Events"
+            events={upcomingDeclinedEvents}
+            loading={loading}
+            onEdit={setEditingEvent}
+            onDelete={deleteEvent}
+            emptyMessage="No declined events"
+            badgeColor="bg-red-100 text-red-800"
+          />
+          
+          <EventCategorySection
+            title="Past Events"
             events={pastEvents}
             loading={loading}
             onDelete={deleteEvent}
+            emptyMessage="No past events"
           />
         </div>
       </div>

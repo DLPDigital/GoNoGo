@@ -26,6 +26,20 @@ service cloud.firestore {
                     request.resource.data.date == resource.data.date &&
                     request.resource.data.description == resource.data.description &&
                     request.resource.data.location == resource.data.location;
+      
+      // NEW RULE: Allow participants to update their attendance status
+      allow update: if request.auth != null &&
+                    // User is already a participant
+                    resource.data.attendeeIds.hasAll([request.auth.uid]) &&
+                    // Only these fields can be changed
+                    request.resource.data.diff(resource.data).affectedKeys()
+                      .hasOnly(['participants', 'status']) &&
+                    // Core event details remain unchanged
+                    request.resource.data.userId == resource.data.userId &&
+                    request.resource.data.title == resource.data.title &&
+                    request.resource.data.date == resource.data.date &&
+                    request.resource.data.description == resource.data.description &&
+                    request.resource.data.location == resource.data.location;
                     
       // Only allow deletion by the creator
       allow delete: if request.auth != null && 
