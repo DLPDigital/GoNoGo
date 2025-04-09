@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { Event } from "@/lib/firebase/events"
 import { EventCardLite } from "@/components/Events/EventCardLite"
 
@@ -23,6 +23,17 @@ export const EventCategorySection: React.FC<EventCategorySectionProps> = ({
   badgeColor,
   showDelete = false,
 }) => {
+  const eventCardsList = useMemo(() => {
+    return events.map(event => (
+      <EventCardLite
+        key={event.id}
+        event={event}
+        onEdit={onEdit ? () => onEdit(event) : undefined}
+        onDelete={onDelete ? () => onDelete(event.id!) : undefined}
+        showDelete={showDelete}
+      />
+    ))
+  }, [events, onEdit, onDelete, showDelete])
   return (
     <div className="bg-white shadow rounded-lg p-6">
       <div className="flex items-center mb-4">
@@ -33,23 +44,13 @@ export const EventCategorySection: React.FC<EventCategorySectionProps> = ({
           </span>
         )}
       </div>
-      
+
       {loading ? (
         <div className="flex justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
         </div>
       ) : events.length > 0 ? (
-        <div className="space-y-4">
-          {events.map(event => (
-            <EventCardLite
-              key={event.id}
-              event={event}
-              onEdit={onEdit ? () => onEdit(event) : undefined}
-              onDelete={onDelete ? () => onDelete(event.id!) : undefined}
-              showDelete={showDelete}
-            />
-          ))}
-        </div>
+        <div className="space-y-4">{eventCardsList}</div>
       ) : (
         <div className="py-8 text-center text-gray-500">{emptyMessage}</div>
       )}
