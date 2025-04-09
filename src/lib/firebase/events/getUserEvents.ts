@@ -16,7 +16,6 @@ export const getUserEvents = async (userId: string) => {
       ...doc.data(),
     })) as Event[]
 
-    console.log("userId we're going to query is", userId)
     // Query for events where the user is an attendee
     const attendedEventsQuery = query(
       collection(db, "events"),
