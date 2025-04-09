@@ -21,17 +21,19 @@ export interface Event {
   location: string
   userId: string
   attendeeIds: string[]
-  attendees: { id: string, name: string }[]
+  attendees: { id: string; name: string }[]
   createdAt: Date
 }
 
-export const createEvent = async (event: Omit<Event, "id" | "createdAt" | "attendees">) => {
+export const createEvent = async (
+  event: Omit<Event, "id" | "createdAt" | "attendees">
+) => {
   try {
     const thisUser = await getUserProfile(event.userId)
     const docRef = await addDoc(collection(db, "events"), {
       ...event,
       attendeeIds: [event.userId],
-      attendees: [{ id: event.userId, name: thisUser?.username || "" }], 
+      attendees: [{ id: event.userId, name: thisUser?.username || "" }],
       createdAt: new Date(),
     })
     return docRef.id
@@ -71,8 +73,8 @@ export const getUserEvents = async (userId: string) => {
 
     // Combine the two arrays and remove duplicates
     const allEvents = [...createdEvents, ...attendedEvents]
-    const uniqueEvents = allEvents.filter((event, index, self) =>
-      index === self.findIndex(e => e.id === event.id)
+    const uniqueEvents = allEvents.filter(
+      (event, index, self) => index === self.findIndex(e => e.id === event.id)
     )
 
     return uniqueEvents
@@ -124,7 +126,10 @@ export const getEventById = async (eventId: string) => {
   }
 }
 
-export const addUserToEvent = async (eventId: string, userId: string): Promise<void> => {
+export const addUserToEvent = async (
+  eventId: string,
+  userId: string
+): Promise<void> => {
   try {
     const eventRef = doc(db, "events", eventId)
     const eventDoc = await getDoc(eventRef)
@@ -134,7 +139,7 @@ export const addUserToEvent = async (eventId: string, userId: string): Promise<v
     }
 
     const eventData = eventDoc.data() as Event
-    
+
     // Initialize arrays if they don't exist (important!)
     const attendees = eventData.attendees || []
     const attendeeIds = eventData.attendeeIds || []
@@ -155,9 +160,9 @@ export const addUserToEvent = async (eventId: string, userId: string): Promise<v
     attendeeIds.push(userId)
 
     // Update the event document with the new attendees arrays
-    await updateDoc(eventRef, { 
+    await updateDoc(eventRef, {
       attendees: attendees,
-      attendeeIds: attendeeIds 
+      attendeeIds: attendeeIds,
     })
   } catch (error) {
     console.error("Error adding user to event:", error)

@@ -15,7 +15,12 @@ import { useRouter } from "next/navigation"
 interface AuthContextType {
   user: User | null
   loading: boolean
-  signUp: (email: string, password: string, name: string, invited?: boolean) => Promise<void>
+  signUp: (
+    email: string,
+    password: string,
+    name: string,
+    invited?: boolean
+  ) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
@@ -28,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
-      console.log('Auth state changed:', user)
+      console.log("Auth state changed:", user)
       setUser(user)
       setLoading(false)
     })
@@ -36,14 +41,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
-  const signUp = async (email: string, password: string, username: string, invited?: boolean) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    username: string,
+    invited?: boolean
+  ) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
       const user = userCredential.user
-  
+
       // Create a user profile with the username
       await createUserProfile(user.uid, email, username)
-  
+
       setUser(user)
       if (!invited) {
         router.push("/dashboard")
@@ -55,7 +69,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   const signIn = async (email: string, password: string) => {
-    console.log('entering')
+    console.log("entering")
     await signInWithEmailAndPassword(auth, email, password)
   }
 

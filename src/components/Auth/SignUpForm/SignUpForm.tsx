@@ -6,7 +6,7 @@ import { Button, Form as HeroForm, Input } from "@heroui/react"
 import { FirebaseError } from "firebase/app"
 
 type SignUpFormProps = {
-  invited?: boolean;
+  invited?: boolean
 }
 
 export const SignUpForm = ({ invited }: SignUpFormProps) => {
@@ -50,7 +50,7 @@ export const SignUpForm = ({ invited }: SignUpFormProps) => {
   return (
     <div className="max-w-[400px] w-full p-8 bg-white rounded-lg shadow-lg space-y-6 mx-auto">
       <HeroForm className="w-full" onSubmit={handleSubmit}>
-      <Input
+        <Input
           type="email"
           label="Email"
           labelPlacement="outside-left"
@@ -102,11 +102,8 @@ export const SignUpForm = ({ invited }: SignUpFormProps) => {
             mainWrapper: "w-full",
           }}
         />
-         {error && <p>{error}</p>}
-        <Button
-          type="submit"
-          color="primary"
-        >
+        {error && <p>{error}</p>}
+        <Button type="submit" color="primary">
           {loading ? "Creating Account..." : "Sign Up"}
         </Button>
       </HeroForm>

@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "Event Buddy is a platform for creating and managing events",
 }
 
+const mainBackgroundColor = "bg-gray-100"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,9 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased ${mainBackgroundColor}`}
       >
-        <AuthProvider><NavBar />{children}</AuthProvider>
+        <AuthProvider>
+          <NavBar />
+          <div className="max-w-4xl w-full mx-auto h-[calc(100vh-6.5rem)]">
+            {children}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   )

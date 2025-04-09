@@ -9,9 +9,7 @@ interface PastEventsProps {
   onDelete: (eventId: string) => void
 }
 
-export const PastEvents = ({
- events, loading, onDelete 
-}: PastEventsProps) => {
+export const PastEvents = ({ events, loading, onDelete }: PastEventsProps) => {
   return (
     <div className="bg-white shadow rounded-lg p-6">
       <h2 className="text-lg font-semibold mb-4">Past Events</h2>

@@ -6,7 +6,7 @@ import { Button, Form as HeroForm, Input } from "@heroui/react"
 import { useRouter } from "next/navigation"
 
 type SignInFormProps = {
-  invited?: boolean;
+  invited?: boolean
 }
 
 export const SignInForm = ({ invited }: SignInFormProps) => {
@@ -60,11 +60,8 @@ export const SignInForm = ({ invited }: SignInFormProps) => {
             mainWrapper: "w-full",
           }}
         />
-         {error && <p>{error}</p>}
-        <Button
-          type="submit"
-          color="primary"
-        >
+        {error && <p>{error}</p>}
+        <Button type="submit" color="primary">
           Sign In
         </Button>
       </HeroForm>

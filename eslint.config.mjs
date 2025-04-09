@@ -15,13 +15,13 @@ const eslintConfig = [
     rules: {
       // Let Prettier handle formatting
       "prettier/prettier": "error",
-      
+
       // Custom rules that don't conflict with Prettier
       "no-unused-vars": "warn",
-      "no-console": ["warn", { "allow": ["warn", "error"] }],
+      "no-console": ["warn", { allow: ["warn", "error"] }],
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-      
+
       // Remove conflicting formatting rules
       // "object-curly-newline": "off",
       // "object-property-newline": "off",

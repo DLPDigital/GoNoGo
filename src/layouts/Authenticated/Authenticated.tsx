@@ -17,8 +17,8 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
   if (!user) return null
 
   return (
-    <div className="h-[calc(100vh-6.5rem)] bg-gray-50">
-      <main className="max-w-4xl mx-auto px-6 lg:px-8" id="main-bit">
+    <div>
+      <main className="max-w-4xl mx-auto px-6 lg:px-8" id="main-auth">
         {children}
       </main>
     </div>

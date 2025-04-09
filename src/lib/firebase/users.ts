@@ -8,7 +8,11 @@ export interface UserProfile {
   createdAt: Date
 }
 
-export const createUserProfile = async (userId: string, email: string, username: string): Promise<void> => {
+export const createUserProfile = async (
+  userId: string,
+  email: string,
+  username: string
+): Promise<void> => {
   try {
     const userRef = doc(db, "users", userId)
     await setDoc(userRef, {
@@ -23,7 +27,10 @@ export const createUserProfile = async (userId: string, email: string, username:
   }
 }
 
-export const updateUserProfile = async (userId: string, data: Partial<UserProfile>): Promise<void> => {
+export const updateUserProfile = async (
+  userId: string,
+  data: Partial<UserProfile>
+): Promise<void> => {
   try {
     const userRef = doc(db, "users", userId)
     await updateDoc(userRef, data)
@@ -33,7 +40,9 @@ export const updateUserProfile = async (userId: string, data: Partial<UserProfil
   }
 }
 
-export const getUserProfile = async (userId: string): Promise<UserProfile | null> => {
+export const getUserProfile = async (
+  userId: string
+): Promise<UserProfile | null> => {
   try {
     const userRef = doc(db, "users", userId)
     const userDoc = await getDoc(userRef)
